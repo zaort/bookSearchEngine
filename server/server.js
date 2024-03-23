@@ -1,19 +1,23 @@
-const express = require('express');
-const path = require('path');
-const db = require('./config/connection');
-// const routes = require('./routes'); no longer needed
-const { ApolloServer } = require("@apollo/server");
-const { expressMiddleware } = require("@apollo/server/express4");
-const { authMiddleware } = require("./utils/auth")
-const app = express();
-const PORT = process.env.PORT || 3001;
-const cors = require("cors");
-const { typeDefs, resolver } = requiere("./schemas/index");
+const express = require("express");
+const jwt = require("jsonwebtoken");
 require("dotenv").config({ path: "../.env" });
+const { ApolloServer } = require("@apollo/server");
+const path = require("path");
+const cors = require("cors");
+const { expressMiddleware } = require("@apollo/server/express4");
+const { authenticationMiddleware } = require("./utils/authentication.js");
 
-const server = new ApolloServer({ typeDefs, resolvers, });
+const { typeDefs, resolvers } = require("./schemas/index.js");
+const db = require("./config/connection.js");
 
-const startApolloServer = async () => {
+const PORT = process.env.PORT || 3001;
+const app = express();
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+});
+
+const startServer = async () => {
   app.use(cors());
   await server.start();
   app.use(express.urlencoded({ extended: false }));
@@ -22,7 +26,7 @@ const startApolloServer = async () => {
   app.use(
     "/graphql",
     expressMiddleware(server, {
-      context: authMiddleware,
+      context: authenticationMiddleware,
     })
   );
 
@@ -36,13 +40,12 @@ const startApolloServer = async () => {
 
   db.once("open", () => {
     app.listen(PORT, () => {
-      console.log(`API server running on port ${PORT}!`);
       console.log(`Use GraphQL at http://localhost:${PORT}/graphql`);
     });
   });
 };
 
-startApolloServer();
+startServer();
 
 
 

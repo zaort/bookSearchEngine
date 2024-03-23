@@ -1,5 +1,5 @@
 const { User } = require("../models");
-const { signToken, AuthenticationError } = require("../utils/auth");
+const { signToken, AuthenticationError } = require("../utils/authentication");
 
 const resolvers = {
  Query: {
@@ -34,7 +34,7 @@ const resolvers = {
     return err;
    }
   },
-  createUser: async (parent, { username, email, password }) => {
+  userSignup: async (parent, { username, email, password }) => {
    try {
     const user = await User.create({ username, email, password });
     const token = signToken(user);
