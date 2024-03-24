@@ -12,7 +12,7 @@ const resolvers = {
   },
  },
  Mutation: {
-  login: async (parent, { email, password }) => {
+  loginUser: async (parent, { email, password }) => {
    try {
     const user = await User.findOne({ email });
 
@@ -34,7 +34,7 @@ const resolvers = {
     return err;
    }
   },
-  userSignup: async (parent, { username, email, password }) => {
+  signupUser: async (parent, { username, email, password }) => {
    try {
     const user = await User.create({ username, email, password });
     const token = signToken(user);
@@ -54,7 +54,7 @@ const resolvers = {
    }
    throw new Error("You need to be logged in!");
   },
-  removeBook: async (parent, { bookId }, context) => {
+  deleteBook: async (parent, { bookId }, context) => {
    if (context.user) {
     const updatedUser = await User.findByIdAndUpdate(
      { _id: context.user._id },

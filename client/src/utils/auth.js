@@ -47,3 +47,4 @@ class Authenticated {
 }
 
 export default new Authenticated();
+

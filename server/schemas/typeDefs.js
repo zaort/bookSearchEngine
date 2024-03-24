@@ -31,10 +31,10 @@ const typeDefs = `
 	me: User
 	}
 	type Mutation {
-		login(email: String!, password: String!): Auth
-		userSignup(username: String!, email: String!, password: String!): Auth
+		loginUser(email: String!, password: String!): Auth
+		signupUser(username: String!, email: String!, password: String!): Auth
 		saveBook(bookData: BookInput!): User
-		removeBook(bookId: ID!): User
+		deleteBook(bookId: ID!): User
 	}
 `;
 module.exports = typeDefs;
