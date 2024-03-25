@@ -1,6 +1,6 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
-require("dotenv").config({ path: "../.env" });
+require("dotenv").config();
 const { ApolloServer } = require("@apollo/server");
 const path = require("path");
 const cors = require("cors");

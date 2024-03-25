@@ -13,7 +13,7 @@ const SignupForm = () => {
 	const [validated] = useState(false);
 	// set state for alert
 	const [showAlert, setShowAlert] = useState(false);
-	const [signupUser, { error, data }] = useMutation(SIGNUP_USER);
+	const [signupMut, { err, data }] = useMutation(SIGNUP_USER);
 
 	const handleInputChange = event => {
 		const { name, value } = event.target;
@@ -31,12 +31,12 @@ const SignupForm = () => {
 		}
 
 		try {
-			const response = await signupUser({
-				variables: { ...userFormData },
-			});
+			// aquí está el pedo, buscar como obtener la info para completar el registro y hacer login. Chcar como lo hace en p3
+			const response = await signupMut({ variables: { username: userFormData.username, email: userFormData.email, password: userFormData.password } });
 
 			Authenticated.login(response.data.signupUser.token);
 		} catch (err) {
+			console.log(data);
 			console.error(err);
 			setShowAlert(true);
 		}

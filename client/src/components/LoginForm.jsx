@@ -12,7 +12,7 @@ const LoginForm = () => {
 	const [userFormData, setUserFormData] = useState({ email: "", password: "" });
 	const [validated] = useState(false);
 	const [showAlert, setShowAlert] = useState(false);
-	const [loginUser, { error, data }] = useMutation(LOGIN_USER); // useMutation hook for login mutation
+	const [loginMut, { err, data }] = useMutation(LOGIN_USER); // useMutation hook for login mutation
 
 	const handleInputChange = event => {
 		const { name, value } = event.target;
@@ -30,19 +30,19 @@ const LoginForm = () => {
 		}
 
 		try {
-			const { data } = await loginUser({
-				variables: { ...userFormData },
+			const { data } = await loginMut({
+				variables: { email: userFormData.email, password: userFormData.password },
 			});
-
-			if (!data || !data.login || !data.login.token) {
+			console.log("Token from login mutation:", data.loginUser.token); // Here, use data.loginUser.token
+			if (!data || !data.loginUser || !data.loginUser.token) {
 				console.error("Unexpected response from login mutation:", data);
 				setShowAlert(true);
 				return;
 			}
 
 			// console.log("Data from login mutation:", data);
-			// console.log("Token from login mutation:", data.login.token);
-			Authenticated.login(data.login.token);
+			console.log("Token from login mutation:", data.loginUser.token);
+			Authenticated.login(data.loginUser.token); // Here, use Authenticated.login
 		} catch (err) {
 			console.error("Error from login function:", err);
 			setShowAlert(true);
